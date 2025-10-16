@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern QR Code Generator</title>
+  <style>
+    /* 🌈 Reset + Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* 🧊 Modern Glass UI Container */
+    .container {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      padding: 40px 30px;
+      width: 380px;
+      text-align: center;
+      color: white;
+    }
+
+    .container h2 {
+      margin-bottom: 15px;
+      font-size: 22px;
+      font-weight: 600;
+    }
+
+    .container input {
+      width: 100%;
+      height: 45px;
+      padding: 0 15px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      outline: none;
+      margin-bottom: 15px;
+      background: rgba(255, 255, 255, 0.9);
+      color: #333;
+    }
+
+    .container input::placeholder {
+      color: #888;
+    }
+
+    .container button {
+      width: 100%;
+      height: 45px;
+      font-size: 16px;
+      font-weight: 600;
+      color: white;
+      background: linear-gradient(135deg, #5b6fd6, #6a3e95);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.3s ease;
+    }
+
+    .container button:hover {
+      transform: translateY(-2px);
+      background: linear-gradient(135deg, #4c5ec7, #5a3288);
+    }
+
+    /* 🌀 Shake Animation */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+
+    .shake {
+      animation: shake 0.4s;
+    }
+
+    /* 📷 QR Image Box */
+    #imgBox {
+      margin-top: 20px;
+      display: none;
+      justify-content: center;
+    }
+
+    #imgBox img {
+      width: 150px;
+      height: 150px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .error-text {
+      margin-top: 10px;
+      color: #ffb3b3;
+      font-size: 14px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Generate Your QR Code</h2>
+    <input id="qrText" type="text" placeholder="Enter text or URL..." />
+    <button id="generateBtn" onclick="generateQR()">Generate QR Code</button>
+
+    <div id="imgBox">
+      <img src="" id="qrImage" alt="QR Code">
+    </div>
+    <p class="error-text" id="errorText">⚠️ Please enter a valid value!</p>
+  </div>
+
+  <script>
+    const imgBox = document.getElementById("imgBox");
+    const qrImage = document.getElementById("qrImage");
+    const qrText = document.getElementById("qrText");
+    const btn = document.getElementById("generateBtn");
+    const errorText = document.getElementById("errorText");
+
+    function generateQR() {
+      const value = qrText.value.trim();
+
+      if (value === "") {
+        // Show error + animate button
+        btn.classList.add("shake");
+        errorText.style.display = "block";
+        setTimeout(() => btn.classList.remove("shake"), 500);
+        imgBox.style.display = "none";
+        return;
+      }
+
+      errorText.style.display = "none";
+      imgBox.style.display = "flex";
+      qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${value}`;
+    }
+  </script>
+</body>
+</html>
